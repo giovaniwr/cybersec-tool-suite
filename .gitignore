@@ -1,0 +1,43 @@
+# ── Python / Backend ─────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Variáveis de ambiente — NUNCA versionar
+backend/.env
+
+# Logs
+*.log
+nohup.out
+
+# ── Node / Frontend ───────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ── IDEs ─────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Banco de dados ────────────────────────────────────────────────────────
+*.sqlite
+*.db
+
+# ── Misc ──────────────────────────────────────────────────────────────────
+*.bak
+*.tmp
+
