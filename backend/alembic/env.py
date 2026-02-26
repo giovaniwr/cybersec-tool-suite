@@ -44,8 +44,13 @@ def do_run_migrations(connection):
 
 async def run_async_migrations() -> None:
     """Modo online assíncrono: conecta ao PostgreSQL via asyncpg."""
+    _is_production = os.getenv("ENVIRONMENT", "development") == "production"
+    db_url = settings.DATABASE_URL.split("?")[0]
+    if _is_production:
+        db_url = f"{db_url}?ssl=true"
+
     connectable = create_async_engine(
-        settings.DATABASE_URL,
+        db_url,
         poolclass=pool.NullPool,
     )
     async with connectable.connect() as connection:

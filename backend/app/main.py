@@ -2,15 +2,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import password
-from app.database import create_tables
 from app.core.config import settings, get_allowed_origins
 import app.models.senha_validador_model  # noqa: F401 — registra o model no metadata
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Executado na inicialização: cria tabelas se não existirem."""
-    await create_tables()
+    """Lifespan — tabelas criadas pelo Alembic no build do Render."""
     yield
 
 

@@ -8,19 +8,25 @@ from app.core.config import settings
 
 _is_production = os.getenv("ENVIRONMENT", "development") == "production"
 
-# Remove query string da URL — SSL tratado via connect_args
-_db_url = settings.DATABASE_URL.split("?")[0] if "?" in settings.DATABASE_URL else settings.DATABASE_URL
-
-# asyncpg aceita ssl="require" (string) para conexões SSL obrigatórias
-_connect_args = {"ssl": "require"} if _is_production else {}
+def _build_db_url() -> str:
+    """
+    Monta a URL final do banco.
+    - Garante prefixo postgresql+asyncpg://
+    - Em produção adiciona sslmode=require como parâmetro de query
+    """
+    url = settings.DATABASE_URL
+    # Remove query string existente
+    base = url.split("?")[0]
+    if _is_production:
+        return f"{base}?ssl=true"
+    return base
 
 engine = create_async_engine(
-    _db_url,
+    _build_db_url(),
     echo=not _is_production,     # loga SQL apenas em dev
     pool_pre_ping=True,          # verifica conexão antes de usar
     pool_size=5,
     max_overflow=10,
-    connect_args=_connect_args,
 )
 
 # Fábrica de sessões assíncronas
