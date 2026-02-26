@@ -3,8 +3,8 @@ services:
   - type: web
     name: cybersec-backend
     runtime: python
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: bash start.sh
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: ENVIRONMENT
         value: production
@@ -37,10 +37,3 @@ databases:
     databaseName: cybersec_db
     user: postgres
     plan: free
-# ── Banco PostgreSQL ───────────────────────────────────────────────────
-databases:
-  - name: cybersec-db
-    databaseName: cybersec_db
-    user: postgres
-    plan: free
-
