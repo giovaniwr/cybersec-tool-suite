@@ -2,21 +2,17 @@
 Configuração da conexão assíncrona com o PostgreSQL usando SQLAlchemy.
 """
 import os
-import ssl
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 from app.core.config import settings
 
 _is_production = os.getenv("ENVIRONMENT", "development") == "production"
 
-# asyncpg exige SSL via connect_args — não via query string na URL
-# Remove ?ssl=require da URL se existir para evitar conflito
+# Remove query string da URL — SSL tratado via connect_args
 _db_url = settings.DATABASE_URL.split("?")[0] if "?" in settings.DATABASE_URL else settings.DATABASE_URL
 
-_connect_args = {}
-if _is_production:
-    # Render exige SSL — usa ssl=True que o asyncpg aceita corretamente
-    _connect_args = {"ssl": True}
+# asyncpg aceita ssl="require" (string) para conexões SSL obrigatórias
+_connect_args = {"ssl": "require"} if _is_production else {}
 
 engine = create_async_engine(
     _db_url,
