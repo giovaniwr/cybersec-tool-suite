@@ -3,9 +3,8 @@ services:
   - type: web
     name: cybersec-backend
     runtime: python
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: bash start.sh
     envVars:
       - key: ENVIRONMENT
         value: production
@@ -22,9 +21,8 @@ services:
   - type: web
     name: cybersec-frontend
     runtime: static
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
         sync: false
