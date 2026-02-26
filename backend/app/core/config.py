@@ -23,6 +23,20 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173",
     ]
 
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def fix_database_url(cls, v):
+        """
+        O Render fornece a URL como postgresql:// ou postgres://
+        mas o asyncpg precisa de postgresql+asyncpg://
+        """
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                v = v.replace("postgres://", "postgresql+asyncpg://", 1)
+            elif v.startswith("postgresql://"):
+                v = v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return v
+
     @field_validator("ALLOWED_ORIGINS", mode="before")
     @classmethod
     def parse_allowed_origins(cls, v):
