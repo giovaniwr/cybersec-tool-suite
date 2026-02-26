@@ -1,22 +1,4 @@
 services:
-  # ── Backend FastAPI ────────────────────────────────────────────────────
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    environment:
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/cybersec_db
-      ENVIRONMENT: development
-      SECRET_KEY: dev-secret-key-insecure
-      ALLOWED_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./backend:/app/backend   # hot-reload em dev
-
   # ── PostgreSQL local ───────────────────────────────────────────────────
   db:
     image: postgres:16-alpine
@@ -34,18 +16,40 @@ services:
       timeout: 5s
       retries: 5
 
+  # ── Backend FastAPI ────────────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/cybersec_db
+      ENVIRONMENT: development
+      SECRET_KEY: dev-secret-key-insecure
+      ALLOWED_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # hot-reload: monta o código local sobre o container
+      - ./backend:/app/backend
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
   # ── Frontend React ─────────────────────────────────────────────────────
   frontend:
     image: node:20-alpine
     working_dir: /app
-    command: sh -c "npm install && npm run dev -- --host"
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
     ports:
       - "5173:5173"
     volumes:
       - ./frontend:/app
+      - /app/node_modules   # evita sobrescrever node_modules do container
     environment:
-      VITE_API_URL: ""   # vazio = usa proxy do Vite em dev
+      VITE_API_URL: ""      # vazio = usa proxy do Vite (localhost:8000)
 
 volumes:
   postgres_data:
-

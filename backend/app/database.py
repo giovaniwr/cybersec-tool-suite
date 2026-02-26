@@ -21,8 +21,14 @@ def _build_engine_kwargs() -> dict:
     ssl_ctx.verify_mode = ssl.CERT_NONE
     return {"connect_args": {"ssl": ssl_ctx}}
 
-# URL sempre sem query string — SSL tratado via connect_args
-_db_url = settings.DATABASE_URL.split("?")[0] if "?" in settings.DATABASE_URL else settings.DATABASE_URL
+# Lê URL do ambiente do sistema (Docker) ou do settings (local sem Docker)
+_raw_url = os.getenv("DATABASE_URL", settings.DATABASE_URL)
+# Garante prefixo asyncpg e remove query string
+if _raw_url.startswith("postgres://"):
+    _raw_url = _raw_url.replace("postgres://", "postgresql+asyncpg://", 1)
+elif _raw_url.startswith("postgresql://"):
+    _raw_url = _raw_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+_db_url = _raw_url.split("?")[0]
 
 engine = create_async_engine(
     _db_url,

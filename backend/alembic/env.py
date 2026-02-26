@@ -45,8 +45,18 @@ def do_run_migrations(connection):
 async def run_async_migrations() -> None:
     """Modo online assíncrono: conecta ao PostgreSQL via asyncpg."""
     import ssl as _ssl
+
     _is_production = os.getenv("ENVIRONMENT", "development") == "production"
-    db_url = settings.DATABASE_URL.split("?")[0] if "?" in settings.DATABASE_URL else settings.DATABASE_URL
+
+    # Lê DATABASE_URL direto do ambiente — ignora .env para funcionar no Docker
+    db_url = os.getenv("DATABASE_URL", settings.DATABASE_URL)
+    # Remove query string existente
+    db_url = db_url.split("?")[0]
+    # Garante prefixo correto
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql+asyncpg://", 1)
+    elif db_url.startswith("postgresql://"):
+        db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
     engine_kwargs: dict = {}
     if _is_production:
