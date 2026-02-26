@@ -44,14 +44,21 @@ def do_run_migrations(connection):
 
 async def run_async_migrations() -> None:
     """Modo online assíncrono: conecta ao PostgreSQL via asyncpg."""
+    import ssl as _ssl
     _is_production = os.getenv("ENVIRONMENT", "development") == "production"
-    db_url = settings.DATABASE_URL.split("?")[0]
+    db_url = settings.DATABASE_URL.split("?")[0] if "?" in settings.DATABASE_URL else settings.DATABASE_URL
+
+    engine_kwargs: dict = {}
     if _is_production:
-        db_url = f"{db_url}?sslmode=require"
+        ssl_ctx = _ssl.create_default_context()
+        ssl_ctx.check_hostname = False
+        ssl_ctx.verify_mode = _ssl.CERT_NONE
+        engine_kwargs["connect_args"] = {"ssl": ssl_ctx}
 
     connectable = create_async_engine(
         db_url,
         poolclass=pool.NullPool,
+        **engine_kwargs,
     )
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)

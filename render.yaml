@@ -1,11 +1,9 @@
 services:
-  # ── Backend FastAPI ────────────────────────────────────────────────────
+  # ── Backend FastAPI (Docker — Python 3.12) ─────────────────────────────
   - type: web
     name: cybersec-backend
-    runtime: python
-    pythonVersion: "3.12.0"
-    buildCommand: pip install -r requirements.txt && cd backend && alembic upgrade head
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    runtime: docker
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: ENVIRONMENT
         value: production

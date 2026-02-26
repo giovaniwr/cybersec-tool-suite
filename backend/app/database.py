@@ -2,31 +2,35 @@
 Configuração da conexão assíncrona com o PostgreSQL usando SQLAlchemy.
 """
 import os
+import ssl
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 from app.core.config import settings
 
 _is_production = os.getenv("ENVIRONMENT", "development") == "production"
 
-def _build_db_url() -> str:
+def _build_engine_kwargs() -> dict:
     """
-    Monta a URL final do banco.
-    - Garante prefixo postgresql+asyncpg://
-    - Em produção adiciona sslmode=require como parâmetro de query
+    Em produção (Render) passa SSL via connect_args.
+    Em desenvolvimento (local/Docker) sem SSL.
     """
-    url = settings.DATABASE_URL
-    # Remove query string existente
-    base = url.split("?")[0]
-    if _is_production:
-        return f"{base}?sslmode=require"
-    return base
+    if not _is_production:
+        return {}
+    ssl_ctx = ssl.create_default_context()
+    ssl_ctx.check_hostname = False
+    ssl_ctx.verify_mode = ssl.CERT_NONE
+    return {"connect_args": {"ssl": ssl_ctx}}
+
+# URL sempre sem query string — SSL tratado via connect_args
+_db_url = settings.DATABASE_URL.split("?")[0] if "?" in settings.DATABASE_URL else settings.DATABASE_URL
 
 engine = create_async_engine(
-    _build_db_url(),
+    _db_url,
     echo=not _is_production,     # loga SQL apenas em dev
     pool_pre_ping=True,          # verifica conexão antes de usar
     pool_size=5,
     max_overflow=10,
+    **_build_engine_kwargs(),
 )
 
 # Fábrica de sessões assíncronas
