@@ -17,12 +17,18 @@ class Settings(BaseSettings):
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def fix_database_url(cls, v):
-        """Converte postgres:// ou postgresql:// para postgresql+asyncpg://"""
+        """
+        Converte postgres:// ou postgresql:// para postgresql+asyncpg://
+        e adiciona ?ssl=require para o Render.
+        """
         if isinstance(v, str):
             if v.startswith("postgres://"):
                 v = v.replace("postgres://", "postgresql+asyncpg://", 1)
             elif v.startswith("postgresql://"):
                 v = v.replace("postgresql://", "postgresql+asyncpg://", 1)
+            # Render exige SSL — adiciona se ainda não estiver na URL
+            if "ssl=" not in v and "oregon-postgres.render.com" in v:
+                v += "?ssl=require"
         return v
 
     model_config = SettingsConfigDict(

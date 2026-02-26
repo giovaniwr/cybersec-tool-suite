@@ -2,30 +2,20 @@
 Configuração da conexão assíncrona com o PostgreSQL usando SQLAlchemy.
 """
 import os
-import ssl
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 from app.core.config import settings
 
-# Em produção (Render) o PostgreSQL exige SSL obrigatório
 _is_production = os.getenv("ENVIRONMENT", "development") == "production"
 
-# Configura SSL apenas em produção
-_connect_args = {}
-if _is_production:
-    _ssl_ctx = ssl.create_default_context()
-    _ssl_ctx.check_hostname = False
-    _ssl_ctx.verify_mode = ssl.CERT_NONE
-    _connect_args = {"ssl": _ssl_ctx}
-
 # Motor assíncrono — usa asyncpg por baixo dos panos
+# SSL é tratado via ?ssl=require na DATABASE_URL (injetado pelo config.py em produção)
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=not _is_production,     # loga SQL apenas em dev
     pool_pre_ping=True,          # verifica conexão antes de usar
     pool_size=5,
     max_overflow=10,
-    connect_args=_connect_args,
 )
 
 # Fábrica de sessões assíncronas
