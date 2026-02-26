@@ -47,7 +47,7 @@ async def run_async_migrations() -> None:
     _is_production = os.getenv("ENVIRONMENT", "development") == "production"
     db_url = settings.DATABASE_URL.split("?")[0]
     if _is_production:
-        db_url = f"{db_url}?ssl=true"
+        db_url = f"{db_url}?sslmode=require"
 
     connectable = create_async_engine(
         db_url,

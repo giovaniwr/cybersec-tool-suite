@@ -18,7 +18,7 @@ def _build_db_url() -> str:
     # Remove query string existente
     base = url.split("?")[0]
     if _is_production:
-        return f"{base}?ssl=true"
+        return f"{base}?sslmode=require"
     return base
 
 engine = create_async_engine(
