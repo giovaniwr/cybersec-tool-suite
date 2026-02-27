@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getTools } from '../../services/api'
 import ToolCard from '../shared/ToolCard'
+import DevProfile from '../shared/DevProfile'
 
 const FALLBACK_TOOLS = [
   {
@@ -54,7 +55,8 @@ export default function ToolSelector() {
           <ToolCard key={tool.id} tool={tool} />
         ))}
       </div>
+
+      <DevProfile />
     </div>
   )
 }
-

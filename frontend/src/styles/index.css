@@ -604,3 +604,218 @@ a { text-decoration: none; color: inherit; }
   .main-content { padding: 1rem 0.75rem; }
 }
 
+/* ============================================================
+   Author Card
+   ============================================================ */
+.author-card {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #111827 0%, #1a2236 100%);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efeito de brilho sutil no fundo */
+.author-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Linha divisória com texto */
+.author-card__divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.author-card__divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+}
+
+.author-card__divider-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Layout horizontal: foto + info */
+.author-card__body {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Wrapper da foto com posição para o badge */
+.author-card__avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Anel de gradiente estilo LinkedIn */
+.author-card__avatar-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #3b82f6, #06b6d4, #8b5cf6);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+.author-card__avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid var(--color-bg);
+  display: block;
+}
+
+.author-card__avatar-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border: 2px solid var(--color-bg);
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Badge verde de "disponível" */
+.author-card__online-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  background: #22c55e;
+  border: 2px solid var(--color-bg);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+}
+
+/* Info textual */
+.author-card__info {
+  flex: 1;
+}
+
+.author-card__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.2rem;
+  background: linear-gradient(135deg, #f1f5f9, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.author-card__role {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.03em;
+}
+
+.author-card__bio {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+  max-width: 420px;
+}
+
+/* Botões das redes sociais */
+.author-card__socials {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.author-card__social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.author-card__social-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* LinkedIn */
+.author-card__social-btn--linkedin {
+  background: rgba(10, 102, 194, 0.15);
+  border-color: rgba(10, 102, 194, 0.4);
+  color: #60a5fa;
+}
+
+.author-card__social-btn--linkedin:hover {
+  background: rgba(10, 102, 194, 0.3);
+  border-color: #0a66c2;
+  color: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(10, 102, 194, 0.3);
+}
+
+/* Instagram */
+.author-card__social-btn--instagram {
+  background: rgba(225, 48, 108, 0.12);
+  border-color: rgba(225, 48, 108, 0.35);
+  color: #f472b6;
+}
+
+.author-card__social-btn--instagram:hover {
+  background: rgba(225, 48, 108, 0.25);
+  border-color: #e1306c;
+  color: #f9a8d4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(225, 48, 108, 0.3);
+}
+
+/* Responsivo mobile */
+@media (max-width: 600px) {
+  .author-card__body {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.25rem;
+  }
+
+  .author-card__bio {
+    max-width: 100%;
+  }
+
+  .author-card__socials {
+    justify-content: center;
+  }
+}
+
