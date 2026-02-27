@@ -819,3 +819,186 @@ a { text-decoration: none; color: inherit; }
   }
 }
 
+/* ============================================================
+   Dev Profile
+   ============================================================ */
+.dev-profile {
+  margin-top: 3.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Divisória com texto central */
+.dev-profile__divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dev-profile__divider::before,
+.dev-profile__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.25), transparent);
+}
+
+.dev-profile__divider-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Card principal */
+.dev-profile__card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 2.25rem;
+  background: linear-gradient(135deg, rgba(17,24,39,0.95) 0%, rgba(15,23,42,0.95) 100%);
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dev-profile__card:hover {
+  border-color: rgba(59,130,246,0.25);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,130,246,0.1);
+}
+
+/* Glow decorativo */
+.dev-profile__glow {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* Avatar com anel gradiente */
+.dev-profile__avatar-wrapper {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+  box-shadow: 0 0 24px rgba(59,130,246,0.35);
+}
+
+.dev-profile__avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 3px solid #0a0e1a;
+  display: block;
+}
+
+/* Info textual */
+.dev-profile__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dev-profile__name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.dev-profile__role {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  margin-bottom: 0.65rem;
+  letter-spacing: 0.02em;
+}
+
+.dev-profile__bio {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+  max-width: 440px;
+}
+
+/* Botões de redes sociais */
+.dev-profile__socials {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.dev-profile__social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: all 0.22s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dev-profile__social-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* LinkedIn */
+.dev-profile__social-btn--linkedin {
+  background: rgba(10,102,194,0.12);
+  border-color: rgba(10,102,194,0.35);
+  color: #60a5fa;
+}
+
+.dev-profile__social-btn--linkedin:hover {
+  background: rgba(10,102,194,0.28);
+  border-color: #2563eb;
+  color: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10,102,194,0.3);
+}
+
+/* Instagram */
+.dev-profile__social-btn--instagram {
+  background: rgba(225,48,108,0.1);
+  border-color: rgba(225,48,108,0.3);
+  color: #f472b6;
+}
+
+.dev-profile__social-btn--instagram:hover {
+  background: rgba(225,48,108,0.22);
+  border-color: #e1306c;
+  color: #f9a8d4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(225,48,108,0.3);
+}
+
+@media (max-width: 600px) {
+  .dev-profile__card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem 1.25rem;
+    gap: 1.25rem;
+  }
+  .dev-profile__bio { max-width: 100%; }
+  .dev-profile__socials { justify-content: center; }
+}
+
