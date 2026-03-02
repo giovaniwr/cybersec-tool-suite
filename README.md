@@ -3,6 +3,7 @@
 Aplicação web full-stack com ferramentas de segurança cibernética.
 
 Acesse para uma maior imersão 
+https://cybersec-frontend.onrender.com/
 
 **Stack:** Python (FastAPI) + React (Vite)
 
