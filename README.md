@@ -2,6 +2,8 @@
 
 Aplicação web full-stack com ferramentas de segurança cibernética.
 
+Acesse para uma maior imersão 
+
 **Stack:** Python (FastAPI) + React (Vite)
 
 ---
