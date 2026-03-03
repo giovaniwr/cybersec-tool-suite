@@ -32,7 +32,7 @@ export default function AuthorCard() {
 
         {/* Info */}
         <div className="author-card__info">
-          <h3 className="author-card__name">Giovani Welinski</h3>
+          <h3 className="author-card__name">Giovani Welington Raitz</h3>
           <p className="author-card__role">Desenvolvedor Full Stack</p>
           <p className="author-card__bio">
             Apaixonado por segurança cibernética, desenvolvimento web e boas práticas de engenharia de software.
